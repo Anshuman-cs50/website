@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react';
+
 const ways = [
   { icon: '💡', title: 'Add a Resource', description: 'Know a great free course or tutorial? Submit it via a GitHub PR.' },
   { icon: '🎨', title: 'Design a Storyboard', description: 'Illustrate an AI concept. Make something complex beautiful and simple.' },
@@ -12,6 +14,88 @@ const GitHubIcon = () => (
 )
 
 export default function Contribute() {
+  const [stats, setStats] = useState({
+    stars: null,
+    forks: null,
+    issues: null,
+    loading: true,
+    error: false,
+  });
+
+  // Fetch GitHub repository details (stars, forks) and open "good first issue" issues
+  useEffect(() => {
+    let isMounted = true;
+
+    async function fetchGitHubStats() {
+      try {
+        const [repoRes, issuesRes] = await Promise.all([
+          fetch('https://api.github.com/repos/HerStack-org/website'),
+          fetch('https://api.github.com/repos/HerStack-org/website/issues?labels=good+first+issue&state=open&per_page=100')
+        ]);
+
+        if (!repoRes.ok || !issuesRes.ok) {
+          throw new Error('Failed to fetch stats');
+        }
+
+        const repoData = await repoRes.json();
+        const issuesData = await issuesRes.json();
+
+        if (isMounted) {
+          setStats({
+            stars: repoData.stargazers_count,
+            forks: repoData.forks_count,
+            issues: Array.isArray(issuesData) ? issuesData.length : 0,
+            loading: false,
+            error: false,
+          });
+        }
+      } catch (err) {
+        if (isMounted) {
+          setStats({
+            stars: null,
+            forks: null,
+            issues: null,
+            loading: false,
+            error: true,
+          });
+        }
+      }
+    }
+
+    fetchGitHubStats();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const displayStats = [
+    {
+      num: stats.loading
+        ? '⭐ —'
+        : stats.error
+          ? '⭐ 0'
+          : `⭐ ${stats.stars}`,
+      label: 'Stars — be the first',
+    },
+    {
+      num: stats.loading
+        ? '🍴 —'
+        : stats.error
+          ? '🍴 0'
+          : `🍴 ${stats.forks}`,
+      label: 'Forks — fork it',
+    },
+    {
+      num: stats.loading
+        ? '🛠 —'
+        : stats.error
+          ? '🛠 Open'
+          : `🛠 ${stats.issues} open`,
+      label: 'Good first issues',
+    },
+  ];
+
   return (
     <section id="contribute" className="py-16 lg:py-24 px-5 sm:px-8 lg:px-16" style={{ background: 'var(--cream)' }}>
       <div className="section-label">Open Source</div>
@@ -69,11 +153,7 @@ export default function Contribute() {
             className="flex flex-wrap gap-5 sm:gap-8 mt-8 pt-6"
             style={{ borderTop: '1px solid rgba(255,255,255,0.1)' }}
           >
-            {[
-              { num: '⭐ 0', label: 'Stars — be the first' },
-              { num: '🍴 0', label: 'Forks — fork it' },
-              { num: '🛠 Open', label: 'Good first issues' },
-            ].map(({ num, label }) => (
+            {displayStats.map(({ num, label }) => (
               <div key={label}>
                 <div className="font-display font-bold text-xl" style={{ color: 'white' }}>{num}</div>
                 <div className="text-xs mt-0.5" style={{ color: 'rgba(255,255,255,0.4)' }}>{label}</div>
@@ -85,3 +165,4 @@ export default function Contribute() {
     </section>
   )
 }
+
