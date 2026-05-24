@@ -8,7 +8,7 @@ const links = {
     { label: 'Blog', href: '#' },
   ],
   Community: [
-    { label: 'Mentors', href: '#' },
+    { label: 'Mentors', href: '/mentors', internal: true },
     { label: 'Summer of AI 2026', href: '#' },
     { label: 'Contribute', href: '#' },
     { label: 'GitHub', href: 'https://github.com/HerStack-org', external: true },

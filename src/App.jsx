@@ -8,11 +8,12 @@ import Marquee from './components/Marquee'
 import Pillars from './components/Pillars'
 import LearningPath from './components/LearningPath'
 import Storyboards from './components/Storyboards'
-import Mentors from './components/Mentors'
+import MentorsSection from './components/Mentors'
 import SummerOfAI from './components/SummerOfAI'
 import Contribute from './components/Contribute'
 import FAQ from './components/FAQ'
 import Concepts from './pages/Concepts'
+import Mentors from './pages/Mentors'
 import BackToTopButton from './components/Backtotop'
 import OurMission from './components/OurMission'
 
@@ -41,7 +42,7 @@ export default function App() {
                     <Pillars />
                     <LearningPath />
                     <Storyboards />
-                    <Mentors />
+                    <MentorsSection />
                     <SummerOfAI />
                     <Contribute />
                     <FAQ />
@@ -49,6 +50,7 @@ export default function App() {
               } />
               <Route path="/our-mission" element={<OurMission />} />
               <Route path="/concepts" element={<Concepts />} />
+              <Route path="/mentors" element={<Mentors />} />
           </Routes>
       </main>
       <Footer />

@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { mentors, avatarStyles } from '../data/mentors'
 
 export default function Mentors() {
@@ -8,7 +9,7 @@ export default function Mentors() {
           <div className="section-label">Role Models</div>
           <h2 className="section-title">Women who've walked<br />this path before you</h2>
         </div>
-        <a href="#" className="btn-secondary hidden md:inline-flex">See all mentors →</a>
+        <Link to="/mentors" className="btn-secondary hidden md:inline-flex">See all mentors →</Link>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -57,7 +58,7 @@ export default function Mentors() {
       </div>
 
       <div className="text-center mt-8">
-        <a href="#" className="btn-secondary">Are you a woman in AI? Join as a mentor →</a>
+        <Link to="/mentors" className="btn-secondary">Are you a woman in AI? Join as a mentor →</Link>
       </div>
     </section>
   )
